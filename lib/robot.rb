@@ -2,7 +2,7 @@ require_relative 'table'
 
 class Robot
 
-  attr_reader :position, :vector
+  attr_reader :x_position, :y_position, :vector
 
   def initialize(table)
     @table = table
@@ -10,7 +10,8 @@ class Robot
 
   def place(position_x, position_y, vector)    	
     if @table.valid_vector?(vector)
-      print vector
+      @x_position = position_x
+      @y_position = position_y
       @vector = vector
       move_to(position_x.to_i, position_y.to_i)
     else
@@ -19,39 +20,33 @@ class Robot
   end
 
 
-  def step_forward
-    move_to(@position.send(@facing.downcase)) if placed?
+  def move
+    #todo
   end
 
   def left
-    clockwise_turn(-1)
+    #todo
   end
 
   def right
-    clockwise_turn(1)
+    #todo
   end
 
   def location 
-    "#{@position},#{@facing}" if placed?
+    "#{@x_position}, #{@y_position}, #{@vector}" if placed?
   end
 
   def placed?
-    !(@position.nil?)
+    !(@vector.nil?)
   end
 
-  def clockwise_turn(steps)
-    index = FACINGS.index(@facing)
-    @facing = FACINGS.rotate(steps)[index] if placed?
-  end
 
   private
 
   def move_to(position_x, position_y) 
-    print position_x
     if @table.inside_table?(position_x, position_y)
       # to do  
-      print "Can be moved"
-      print position_y
+
     else
       print "Wrong coordinates"
     end

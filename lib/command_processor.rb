@@ -15,22 +15,28 @@ class CommandProcessor
     command = create(command)
   end
 
+  def command_proceed(command)
+    if command == 'REPORT'
+      robot_location = @robot.location
+      puts robot_location unless robot_location.nil?
+    end 
+
+  end
+
   # PLACE command will process difeferent ways as we need to fetch coordinates + vector	
   def place_command_proceed
     @robot.place(@x_position.to_i, @y_position.to_i, @vector.to_s)
-    print "Placing vector to: "
-    puts @vector	
   end
 
   def create(command)
     # remember the command
     #initial_command = command.dup 
 
-    if is_place_command?(command)
+    if is_place_command?(command) && !@robot.placed?
       place_command_proceed
     elsif valid_command?(command)
-      #command_proceed(command)
-      puts "command_proceed" 
+
+      command_proceed(command)
     else	
       puts "Wrong command. Try again"
     end
@@ -46,7 +52,7 @@ class CommandProcessor
   def is_place_command?(com)
       com.slice!('PLACE ')
       @x_position, @y_position, @vector =  com.split(",")
-      #check if coordinates and vecor are OK
+      #check if coordinates and vector are OK
       @table.inside_table?(@x_position.to_i, @y_position.to_i) && @table.valid_vector?(@vector.to_s)
   end
 
