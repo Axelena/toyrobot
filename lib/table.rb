@@ -8,12 +8,12 @@ class Table
   end
 
   def inside_table?(x_position, y_position)
-    within_width?(x_position) && within_height?(x_position)
+    within_width?(x_position) && within_height?(y_position)
   end
 
 
   def valid_vector?(v)
-    VALID_VECTORS.include?(v.to_s)
+    VALID_VECTORS.include?(v.strip.to_s)
   end   
 
   private

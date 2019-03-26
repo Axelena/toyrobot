@@ -19,13 +19,15 @@ class CommandProcessor
     if command == 'REPORT'
       robot_location = @robot.location
       puts robot_location unless robot_location.nil?
+    elsif command == 'MOVE'
+      @robot.move
     end 
 
   end
 
   # PLACE command will process difeferent ways as we need to fetch coordinates + vector	
   def place_command_proceed
-    @robot.place(@x_position.to_i, @y_position.to_i, @vector.to_s)
+    @robot.place(@x_position.to_i, @y_position.to_i, @vector.to_s.strip)
   end
 
   def create(command)

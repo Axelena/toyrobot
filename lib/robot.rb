@@ -8,12 +8,11 @@ class Robot
     @table = table
   end
 
-  def place(position_x, position_y, vector)    	
+  def place(position_x, position_y, vector) 	
     if @table.valid_vector?(vector)
       @x_position = position_x
       @y_position = position_y
       @vector = vector
-      move_to(position_x.to_i, position_y.to_i)
     else
       print "Wrong coordinates"
     end
@@ -21,7 +20,33 @@ class Robot
 
 
   def move
-    #todo
+    if placed?
+      case @vector
+        when "NORTH" 
+          if @table.inside_table?((@y_position+1), @x_position)
+            @y_position += 1 
+          end
+        when "EAST" 
+          if @table.inside_table?(@y_position, @x_position+1) 
+            puts "x: #{@x_position}"
+            @x_position += 1
+          end
+        when "SOUTH" 
+          if @table.inside_table?(@y_position-1, @x_position) 
+            @y_position -= 1
+          end
+        when "WEST" 
+          if @table.inside_table?(@y_position, @x_position-1)  
+            @x_position -= 1
+          end
+      end
+
+      move_to(@x_position,@y_position)
+      
+    else
+      puts "The robot hasn't been placed yet"
+    end
+
   end
 
   def left
@@ -33,7 +58,7 @@ class Robot
   end
 
   def location 
-    "#{@x_position}, #{@y_position}, #{@vector}" if placed?
+    "#{@x_position},#{@y_position},#{@vector}" if placed?
   end
 
   def placed?
@@ -44,11 +69,8 @@ class Robot
   private
 
   def move_to(position_x, position_y) 
-    if @table.inside_table?(position_x, position_y)
-      # to do  
-
-    else
-      print "Wrong coordinates"
+    unless @table.inside_table?(position_x, position_y)
+      puts "Can't be moved there"
     end
   end
 
