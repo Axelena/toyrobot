@@ -3,19 +3,19 @@ require_relative 'table'
 
 class CommandProcessor
 
-  VALID_COMMANDS = ["PLACE", "MOVE", "LEFT", "RIGHT", "REPORT"]  
+  VALID_COMMANDS = ["MOVE", "LEFT", "RIGHT", "REPORT"]  
 
-  def initialize(robot, io = STDOUT)
-    @table = Table.new
+  def initialize(robot, table, io = STDOUT)
+    @table = table
     @robot = robot
     @io = io
   end
 
   def process(command)
     command = create(command)
-    # command.execute
   end
 
+  # PLACE command will process difeferent ways as we need to fetch coordinates + vector	
   def place_command_proceed
     @robot.place(@x_position.to_i, @y_position.to_i, @vector.to_s)
     print "Placing vector to: "
@@ -29,7 +29,8 @@ class CommandProcessor
     if is_place_command?(command)
       place_command_proceed
     elsif valid_command?(command)
-      #command_proceed(command) 
+      #command_proceed(command)
+      puts "command_proceed" 
     else	
       puts "Wrong command. Try again"
     end
@@ -45,6 +46,7 @@ class CommandProcessor
   def is_place_command?(com)
       com.slice!('PLACE ')
       @x_position, @y_position, @vector =  com.split(",")
+      #check if coordinates and vecor are OK
       @table.inside_table?(@x_position.to_i, @y_position.to_i) && @table.valid_vector?(@vector.to_s)
   end
 
